@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <img src='https://github.com/Aniruddha-Gade/Study-Notion-EdTech__MERN-Stack/blob/main/frontend/src/assets/Logo/Logo-Full-Light.png' />
 
@@ -267,3 +268,6 @@ Utilized several React hooks for efficient state management and dynamic behavior
 
 
  
+=======
+# AarambhDefence
+>>>>>>> bbccfa0d3293638271459c934613ab012eecf3df
