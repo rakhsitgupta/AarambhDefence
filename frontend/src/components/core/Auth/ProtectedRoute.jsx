@@ -1,18 +1,22 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom';
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
+import Loading from '../../common/Loading';
 
 const ProtectedRoute = ({ children }) => {
+    const { isAuthenticated, isLoading } = useAuth();
+    const location = useLocation();
 
-    const { token } = useSelector(state => state.auth);
-
-    // user logged in
-    if (token !== null) {
-        return children;
+    if (isLoading) {
+        return <Loading />;
     }
 
-    return <Navigate to='/' />
+    if (!isAuthenticated) {
+        // Redirect to login page but save the attempted url
+        return <Navigate to="/login" state={{ from: location }} replace />;
+    }
 
-}
+    return children;
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

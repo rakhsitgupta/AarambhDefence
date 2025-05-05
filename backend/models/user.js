@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
         accountType: {
             type: String,
             enum: ['Admin', 'Instructor', 'Student'],
-            reuired: true
+            required: true
         },
         active: {
             type: Boolean,
@@ -61,7 +61,17 @@ const userSchema = new mongoose.Schema(
                 ref: 'CourseProgress'
 
             }
-        ]
+        ],
+        enrolledStudyMaterials: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'StudyMaterial'
+            }
+        ],
+        enrolledMockTests: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'MockTest'
+        }]
     },// Add timestamps for when the document is created and last modified
     { timestamps: true }
 );

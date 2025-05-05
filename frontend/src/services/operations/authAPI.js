@@ -85,7 +85,6 @@ export function signUp(accountType, firstName, lastName, email, password, confir
 // ================ Login ================
 export function login(email, password, navigate) {
   return async (dispatch) => {
-
     const toastId = toast.loading("Loading...");
     dispatch(setLoading(true));
 
@@ -93,35 +92,62 @@ export function login(email, password, navigate) {
       const response = await apiConnector("POST", LOGIN_API, {
         email,
         password,
-      })
+      });
 
-      console.log("LOGIN API RESPONSE............", response);
+      console.log("Login Response:", response); // Debug log
 
-      if (!response.data.success) {
-        throw new Error(response.data.message)
+      // Check if response exists
+      if (!response) {
+        throw new Error("No response from server");
       }
 
-      toast.success("Login Successful")
-      dispatch(setToken(response.data.token))
+      // Get token and user data
+      const token = response.token;
+      const user = response.user;
 
-      const userImage = response.data?.user?.image
-        ? response.data.user.image
-        : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`
+      if (!token || !user) {
+        throw new Error("Invalid response format from server");
+      }
 
-      dispatch(setUser({ ...response.data.user, image: userImage }));
-      // console.log('User data - ', response.data.user);/
-      localStorage.setItem("token", JSON.stringify(response.data?.token));
+      // Store token in Redux and localStorage
+      dispatch(setToken(token));
+      localStorage.setItem("token", JSON.stringify(token));
 
-      localStorage.setItem("user", JSON.stringify({ ...response.data.user, image: userImage }));
+      // Store user data
+      const userImage = user?.image
+        ? user.image
+        : `https://api.dicebear.com/5.x/initials/svg?seed=${user.firstName} ${user.lastName}`;
 
+      const userData = { ...user, image: userImage };
+      dispatch(setUser(userData));
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      toast.success("Login Successful");
       navigate("/dashboard/my-profile");
     } catch (error) {
-      console.log("LOGIN API ERROR.......", error)
-      toast.error(error.response?.data?.message)
+      console.error("Login error:", error);
+      // Handle different types of errors
+      if (error.response) {
+        // Server responded with error
+        toast.error(error.response.data?.message || "Login failed. Please try again.");
+      } else if (error.request) {
+        // Request made but no response
+        toast.error("No response from server. Please try again.");
+      } else {
+        // Other errors
+        toast.error(error.message || "Login failed. Please try again.");
+      }
+      
+      // Clear any existing token on login failure
+      dispatch(setToken(null));
+      dispatch(setUser(null));
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    } finally {
+      dispatch(setLoading(false));
+      toast.dismiss(toastId);
     }
-    dispatch(setLoading(false))
-    toast.dismiss(toastId)
-  }
+  };
 }
 
 

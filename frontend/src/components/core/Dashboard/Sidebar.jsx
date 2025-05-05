@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { VscSignOut } from "react-icons/vsc"
+import { VscSignOut, VscSettingsGear } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
@@ -77,7 +77,7 @@ export default function Sidebar() {
             {sidebarLinks.map((link) => {
               if (link.type && user?.accountType !== link.type) return null
               return (
-                <SidebarLink key={link.id} link={link} iconName={link.icon} setOpenSideMenu={setOpenSideMenu} />
+                <SidebarLink key={link.id} link={link} />
               )
             })}
           </div>
@@ -86,9 +86,11 @@ export default function Sidebar() {
 
           <div className="flex flex-col">
             <SidebarLink
-              link={{ name: "Settings", path: "/dashboard/settings" }}
-              iconName={"VscSettingsGear"}
-              setOpenSideMen={setOpenSideMenu}
+              link={{ 
+                name: "Settings", 
+                path: "/dashboard/settings",
+                icon: VscSettingsGear 
+              }}
             />
 
             <button

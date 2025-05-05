@@ -17,23 +17,22 @@ const timeline = [
     {
         Logo: Logo1,
         heading: "Leadership",
-        Description: "Fully committed to the success company",
+        Description: "We instill leadership qualities that prepare you for the challenges of defense and beyond.",
     },
     {
         Logo: Logo2,
         heading: "Responsibility",
-        Description: "Students will always be our top priority",
+        Description: "We prioritize the growth and success of our aspirants, ensuring they are always our focus.",
     },
     {
         Logo: Logo3,
-        heading: "Flexibility",
-        Description: "The ability to switch is an important skills",
+        heading: "Discipline",
+        Description: "A strong foundation of discipline is key to success in both the defense exams and life.",
     },
-
     {
         Logo: Logo4,
-        heading: "Solve the problem",
-        Description: "Code your way to a solution",
+        heading: "Problem-Solving",
+        Description: "We equip you with the problem-solving mindset needed to excel in your defense preparation and interviews.",
     },
 ];
 

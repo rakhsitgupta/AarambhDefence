@@ -8,58 +8,68 @@ require('dotenv').config();
 // user Authentication by checking token validating
 exports.auth = (req, res, next) => {
     try {
-        // extract token by anyone from this 3 ways
-        const token = req.body?.token || req.cookies.token || req.header('Authorization').replace('Bearer ', '');
+        // extract token from Authorization header
+        const authHeader = req.header('Authorization');
+        
+        // If no auth header, return unauthorized
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({
+                success: false,
+                message: "Please login to access this resource"
+            });
+        }
+
+        const token = authHeader.replace('Bearer ', '').trim();
 
         // if token is missing
         if (!token) {
             return res.status(401).json({
                 success: false,
-                message: 'Token is Missing'
+                message: "Please login to access this resource"
             });
         }
 
-        // console.log('Token ==> ', token);
-        // console.log('From body -> ', req.body?.token);
-        // console.log('from cookies -> ', req.cookies?.token);
-        // console.log('from headers -> ', req.header('Authorization')?.replace('Bearer ', ''));
-
         // verify token
         try {
-            const decode = jwt.verify(token, process.env.JWT_SECRET);
-            // console.log('verified decode token => ', decode);
+            if (!process.env.JWT_SECRET) {
+                throw new Error('JWT_SECRET is not configured');
+            }
             
-            // *********** example from console ***********
-            // verified decode token =>  {
-            //     email: 'buydavumli@biyac.com',
-            //     id: '650d6ae2914831142c702e4c',
-            //     accountType: 'Student',
-            //     iat: 1699452446,
-            //     exp: 1699538846
-            //   }
-            req.user = decode;
-        }
-        catch (error) {
-            console.log('Error while decoding token');
-            console.log(error);
+            // Verify the token
+            const verified = jwt.verify(token, process.env.JWT_SECRET);
+            
+            // Check if token is expired
+            if (verified.exp < Date.now() / 1000) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Session expired. Please login again"
+                });
+            }
+            
+            // Ensure user ID is present
+            if (!verified._id) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Invalid token"
+                });
+            }
+            
+            // Attach user information to request
+            req.user = verified;
+            next();
+        } catch (error) {
             return res.status(401).json({
                 success: false,
-                error: error.message,
-                messgae: 'Error while decoding token'
-            })
+                message: "Invalid token"
+            });
         }
-        // go to next middleware
-        next();
-    }
-    catch (error) {
-        console.log('Error while token validating');
-        console.log(error);
+    } catch (error) {
         return res.status(500).json({
             success: false,
-            messgae: 'Error while token validating'
-        })
+            message: error.message
+        });
     }
-}
+};
 
 
 
@@ -68,24 +78,28 @@ exports.auth = (req, res, next) => {
 // ================ IS STUDENT ================
 exports.isStudent = (req, res, next) => {
     try {
-        // console.log('User data -> ', req.user)
-        if (req.user?.accountType != 'Student') {
+        if (!req.user) {
             return res.status(401).json({
                 success: false,
-                messgae: 'This Page is protected only for student'
-            })
+                message: 'Please login to access this resource'
+            });
         }
-        // go to next middleware
+
+        if (req.user.accountType !== 'Student') {
+            return res.status(401).json({
+                success: false,
+                message: 'This Page is protected only for student'
+            });
+        }
         next();
     }
     catch (error) {
-        console.log('Error while cheching user validity with student accountType');
-        console.log(error);
+        console.log('Error while checking user validity with student accountType:', error);
         return res.status(500).json({
             success: false,
             error: error.message,
-            messgae: 'Error while cheching user validity with student accountType'
-        })
+            message: 'Error while checking user validity with student accountType'
+        });
     }
 }
 
@@ -93,24 +107,28 @@ exports.isStudent = (req, res, next) => {
 // ================ IS INSTRUCTOR ================
 exports.isInstructor = (req, res, next) => {
     try {
-        // console.log('User data -> ', req.user)
-        if (req.user?.accountType != 'Instructor') {
+        if (!req.user) {
             return res.status(401).json({
                 success: false,
-                messgae: 'This Page is protected only for Instructor'
-            })
+                message: 'Please login to access this resource'
+            });
         }
-        // go to next middleware
+
+        if (req.user.accountType !== 'Instructor') {
+            return res.status(401).json({
+                success: false,
+                message: 'This Page is protected only for Instructor'
+            });
+        }
         next();
     }
     catch (error) {
-        console.log('Error while cheching user validity with Instructor accountType');
-        console.log(error);
+        console.log('Error while checking user validity with instructor accountType:', error);
         return res.status(500).json({
             success: false,
             error: error.message,
-            messgae: 'Error while cheching user validity with Instructor accountType'
-        })
+            message: 'Error while checking user validity with instructor accountType'
+        });
     }
 }
 
@@ -118,24 +136,28 @@ exports.isInstructor = (req, res, next) => {
 // ================ IS ADMIN ================
 exports.isAdmin = (req, res, next) => {
     try {
-        // console.log('User data -> ', req.user)
-        if (req.user.accountType != 'Admin') {
+        if (!req.user) {
             return res.status(401).json({
                 success: false,
-                messgae: 'This Page is protected only for Admin'
-            })
+                message: 'Please login to access this resource'
+            });
         }
-        // go to next middleware
+
+        if (req.user.accountType !== 'Admin') {
+            return res.status(401).json({
+                success: false,
+                message: 'This Page is protected only for Admin'
+            });
+        }
         next();
     }
     catch (error) {
-        console.log('Error while cheching user validity with Admin accountType');
-        console.log(error);
+        console.log('Error while checking user validity with Admin accountType:', error);
         return res.status(500).json({
             success: false,
             error: error.message,
-            messgae: 'Error while cheching user validity with Admin accountType'
-        })
+            message: 'Error while checking user validity with Admin accountType'
+        });
     }
 }
 

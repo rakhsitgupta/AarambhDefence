@@ -30,6 +30,14 @@ body {
   color: transparent;
 }
 
+.golden_gradient {
+  background: linear-gradient(118.19deg, #FFD700 -3.62%, #FFA500 50.44%, #FF8C00 104.51%),
+    linear-gradient(0deg, #FFF8DC, #FFF8DC);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
@@ -222,5 +230,17 @@ body {
 /* used in home.jsx - random background  */
 .opacity_layer_bg {
   background: linear-gradient(180deg, rgba(4, 21, 45, 0) 0%, #04152d 79.17%);
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px #FCB045;
+  }
+  50% {
+    box-shadow: 0 0 20px #FCB045;
+  }
+  100% {
+    box-shadow: 0 0 5px #FCB045;
+  }
 }
 

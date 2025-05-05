@@ -1,5 +1,5 @@
 const Course = require('../models/course');
-const User = require('../models/user');
+const UserModel = require('../models/user');
 const Category = require('../models/category');
 const Section = require('../models/section')
 const SubSection = require('../models/subSection')
@@ -64,7 +64,7 @@ exports.createCourse = async (req, res) => {
         });
 
         // add course id to instructor courses list, this is bcoz - it will show all created courses by instructor 
-        await User.findByIdAndUpdate(instructorId,
+        await UserModel.findByIdAndUpdate(instructorId,
             {
                 $push: {
                     courses: newCourse._id
@@ -412,7 +412,7 @@ exports.deleteCourse = async (req, res) => {
         // Unenroll students from the course
         const studentsEnrolled = course.studentsEnrolled
         for (const studentId of studentsEnrolled) {
-            await User.findByIdAndUpdate(studentId, {
+            await UserModel.findByIdAndUpdate(studentId, {
                 $pull: { courses: courseId },
             })
         }

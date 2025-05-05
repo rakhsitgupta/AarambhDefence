@@ -1,3 +1,4 @@
+import { VscHome, VscMortarBoard, VscBook, VscFilePdf, VscTasklist, VscCalendar } from "react-icons/vsc";
 import { ACCOUNT_TYPE } from './../src/utils/constants';
 
 export const sidebarLinks = [
@@ -5,62 +6,112 @@ export const sidebarLinks = [
     id: 1,
     name: "My Profile",
     path: "/dashboard/my-profile",
-    icon: "VscAccount",
+    icon: VscHome,
+    type: ACCOUNT_TYPE.INSTRUCTOR
   },
   {
     id: 2,
     name: "Dashboard",
     path: "/dashboard/instructor",
-    type: ACCOUNT_TYPE.INSTRUCTOR,
-    icon: "VscDashboard",
+    icon: VscMortarBoard,
+    type: ACCOUNT_TYPE.INSTRUCTOR
   },
   {
     id: 3,
     name: "My Courses",
     path: "/dashboard/my-courses",
-    type: ACCOUNT_TYPE.INSTRUCTOR,
-    icon: "VscVm",
+    icon: VscBook,
+    type: ACCOUNT_TYPE.INSTRUCTOR
   },
   {
     id: 4,
     name: "Add Course",
     path: "/dashboard/add-course",
-    type: ACCOUNT_TYPE.INSTRUCTOR,
-    icon: "VscAdd",
+    icon: VscBook,
+    type: ACCOUNT_TYPE.INSTRUCTOR
   },
   {
     id: 5,
-    name: "Enrolled Courses",
-    path: "/dashboard/enrolled-courses",
-    type: ACCOUNT_TYPE.STUDENT,
-    icon: "VscMortarBoard",
+    name: "Add Mocktest",
+    path: "/dashboard/add-mocktest",
+    icon: VscFilePdf,
+    type: ACCOUNT_TYPE.INSTRUCTOR
   },
   {
     id: 6,
-    name: "Purchase History",
-    path: "/dashboard/purchase-history",
-    type: ACCOUNT_TYPE.STUDENT,
-    icon: "VscHistory",
+    name: "Add Study Material",
+    path: "/dashboard/add-study-material",
+    icon: VscFilePdf,
+    type: ACCOUNT_TYPE.INSTRUCTOR
   },
   {
     id: 7,
-    name: "Create Category",
-    path: "/dashboard/create-category",
-    type: ACCOUNT_TYPE.ADMIN,
-    icon: "VscNewFolder",
+    name: "My Mocktests",
+    path: "/dashboard/my-mocktests",
+    icon: VscFilePdf,
+    type: ACCOUNT_TYPE.INSTRUCTOR
   },
   {
     id: 8,
-    name: "All Students",
-    path: "/dashboard/all-students",
-    type: ACCOUNT_TYPE.ADMIN,
-    icon: "VscBook",
+    name: "My Study Materials",
+    path: "/dashboard/my-study-materials",
+    icon: VscFilePdf,
+    type: ACCOUNT_TYPE.INSTRUCTOR
   },
   {
     id: 9,
-    name: "All Instructors",
-    path: "/dashboard/all-instructors",
-    type: ACCOUNT_TYPE.ADMIN,
-    icon: "VscNotebook",
+    name: "My Profile",
+    path: "/dashboard/my-profile",
+    icon: VscHome,
+    type: ACCOUNT_TYPE.STUDENT
   },
+  {
+    id: 10,
+    name: "Enrolled Courses",
+    path: "/dashboard/enrolled-courses",
+    icon: VscBook,
+    type: ACCOUNT_TYPE.STUDENT
+  },
+  {
+    id: 11,
+    name: "Task Planner",
+    path: "/dashboard/task-planner",
+    icon: VscCalendar,
+    type: ACCOUNT_TYPE.STUDENT
+  },
+  {
+    id: 12,
+    name: "Enrolled Mocktests",
+    path: "/dashboard/enrolled-mocktests",
+    icon: VscFilePdf,
+    type: ACCOUNT_TYPE.STUDENT
+  },
+  {
+    id: 13,
+    name: "Enrolled Study Materials",
+    path: "/dashboard/enrolled-study-materials",
+    icon: VscFilePdf,
+    type: ACCOUNT_TYPE.STUDENT
+  },
+  {
+    id: 14,
+    name: "My Profile",
+    path: "/dashboard/my-profile",
+    icon: VscHome,
+    type: ACCOUNT_TYPE.ADMIN
+  },
+  {
+    id: 15,
+    name: "Dashboard",
+    path: "/dashboard/admin",
+    icon: VscMortarBoard,
+    type: ACCOUNT_TYPE.ADMIN
+  },
+  {
+    id: 16,
+    name: "Categories",
+    path: "/dashboard/categories",
+    icon: VscTasklist,
+    type: ACCOUNT_TYPE.ADMIN
+  }
 ];

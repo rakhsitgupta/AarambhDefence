@@ -1,33 +1,33 @@
 import { useState } from "react"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
-import { useDispatch } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
-
-import { login } from "../../../services/operations/authAPI"
+import { Link } from "react-router-dom"
+import { useAuth } from "../../../context/AuthContext"
 
 function LoginForm() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { login, isLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
-  const [showPassword, setShowPassword] = useState(false)
-
+  const [showPassword, setShowPassword] = useState(false);
   const { email, password } = formData;
 
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
-    }))
-  }
+    }));
+  };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login(email, password, navigate))
-  }
+    try {
+      await login(email, password);
+    } catch (error) {
+      // Error is already handled in the auth context
+      console.error('Login error:', error);
+    }
+  };
 
   return (
     <form
@@ -85,15 +85,17 @@ function LoginForm() {
         </Link>
       </label>
 
-
       <button
         type="submit"
-        className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+        disabled={isLoading}
+        className={`mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900 ${
+          isLoading ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
       >
-        Sign In
+        {isLoading ? 'Signing In...' : 'Sign In'}
       </button>
     </form>
-  )
+  );
 }
 
-export default LoginForm
+export default LoginForm;

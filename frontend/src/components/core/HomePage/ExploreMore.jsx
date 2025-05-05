@@ -4,20 +4,17 @@ import CourseCard from "./CourseCard";
 import HighlightText from "./HighlightText";
 
 const tabsName = [
-  "Free",
-  "New to coding",
-  "Most popular",
-  "Skills paths",
-  "Career paths",
+  "CDS",
+  "NDA",
+  "SSB Interview",
+  "AFCAT",
+  "Personality Development",
 ];
-
 
 const ExploreMore = () => {
   const [currentTab, setCurrentTab] = useState(tabsName[0]);
   const [courses, setCourses] = useState(HomePageExplore[0].courses);
-  const [currentCard, setCurrentCard] = useState(
-    HomePageExplore[0].courses[0].heading
-  );
+  const [currentCard, setCurrentCard] = useState(HomePageExplore[0].courses[0].heading);
 
   const setMyCards = (value) => {
     setCurrentTab(value);
@@ -29,14 +26,14 @@ const ExploreMore = () => {
   return (
     <div>
       {/* Explore more section */}
-      <div>
-        <div className="text-3xl lg:text-4xl font-semibold text-center my-10">
+      <div className="text-center my-10">
+        <div className="text-3xl lg:text-4xl font-semibold text-white">
           Unlock the
-          <HighlightText text={"Power of Code"} />
-          <p className="text-center text-richblack-300 text-base lg:text-lg font-semibold mt-1">
-            Learn to Build Anything You Can Imagine
-          </p>
+          <HighlightText text={"Power of Defense Preparation"} />
         </div>
+        <p className="text-center text-richblack-300 text-base lg:text-lg font-semibold mt-1">
+          Empower Yourself for a Stronger Future in Defense Services
+        </p>
       </div>
 
       {/* Tabs Section */}
@@ -44,11 +41,11 @@ const ExploreMore = () => {
         {tabsName.map((ele, index) => {
           return (
             <div
-              className={` text-[16px] flex flex-row items-center gap-2 ${currentTab === ele
+              key={index}
+              className={`text-[16px] flex flex-row items-center gap-2 ${currentTab === ele
                 ? "bg-richblack-900 text-richblack-5 font-medium"
                 : "text-richblack-200"
                 } px-7 py-[7px] rounded-full transition-all duration-200 cursor-pointer hover:bg-richblack-900 hover:text-richblack-5`}
-              key={index}
               onClick={() => setMyCards(ele)}
             >
               {ele}
@@ -69,11 +66,11 @@ const ExploreMore = () => {
               currentCard={currentCard}
               setCurrentCard={setCurrentCard}
             />
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ExploreMore;
